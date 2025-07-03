@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc_mixins/bloc_mixins.dart';
@@ -8,8 +9,8 @@ class DisposeTestUsecase with BlocMixinsUsecase {
   }
 
   @override
-  void dispose() {
+  FutureOr<void> close() async {
     log('disposed', name: 'DisposeTestUsecase');
-    return super.dispose();
+    return super.close();
   }
 }

@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:bloc_mixins/src/core/base_streamable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-mixin class BlocMixinsUsecase<T> implements BaseStreamable<T> {
+mixin class BlocMixinsUsecase<T> implements Streamable<T>, Closable {
   final _streamController = StreamController<T>.broadcast();
 
   @override
@@ -11,9 +11,12 @@ mixin class BlocMixinsUsecase<T> implements BaseStreamable<T> {
 
   @override
   @mustCallSuper
-  void dispose() {
+  FutureOr<void> close() {
     _streamController.close();
   }
+
+  @override
+  bool get isClosed => _streamController.isClosed;
 
   void yieldData(T value) {
     if (!_streamController.isClosed) {

@@ -12,7 +12,7 @@ class BlocMixinsUsecaseProvider<T extends BlocMixinsUsecase>
   }) : super(
          dispose: dispose != null
              ? (value) => dispose(value)
-             : (value) => value.dispose(),
+             : (value) => value.close(),
        );
 
   BlocMixinsUsecaseProvider.value({
