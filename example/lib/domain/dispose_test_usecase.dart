@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc_mixins/bloc_mixins.dart';
 
-class DisposeTestUsecase with BlocMixinsUsecase {
+class DisposeTestUsecase with UsecaseStream {
   DisposeTestUsecase() {
     log('created', name: 'DisposeTestUsecase');
   }

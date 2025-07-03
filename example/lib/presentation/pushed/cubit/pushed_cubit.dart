@@ -9,9 +9,9 @@ class PushedCubit extends Cubit<PushedState> {
 
   late final StreamSubscription<int> _addOneUsecaseSubscription;
 
-  PushedCubit({required int initialCount, required AddOneUsecase addOneUsecase})
+  PushedCubit({required AddOneUsecase addOneUsecase})
     : _addOneUsecase = addOneUsecase,
-      super(PushedState.init(initialCount: initialCount)) {
+      super(PushedState.init(initialCount: addOneUsecase.result ?? 0)) {
     _addOneUsecaseSubscription = _addOneUsecase.stream.listen((data) {
       emit(state.copyWith(count: data));
     });

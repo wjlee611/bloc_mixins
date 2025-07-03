@@ -1,23 +1,15 @@
-import 'package:bloc_mixins/src/usecase.dart';
+import 'package:bloc_mixins/src/usecase_stream.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BlocMixinsUsecaseProvider<T extends BlocMixinsUsecase>
-    extends RepositoryProvider<T> {
-  BlocMixinsUsecaseProvider({
+class UsecaseProvider<T extends UsecaseStream> extends RepositoryProvider<T> {
+  UsecaseProvider({
     required super.create,
     void Function(T value)? dispose,
     super.key,
     super.child,
     super.lazy,
-  }) : super(
-         dispose: dispose != null
-             ? (value) => dispose(value)
-             : (value) => value.close(),
-       );
+  }) : super(dispose: dispose ?? (value) => value.close());
 
-  BlocMixinsUsecaseProvider.value({
-    required super.value,
-    super.key,
-    super.child,
-  }) : super.value();
+  UsecaseProvider.value({required super.value, super.key, super.child})
+    : super.value();
 }

@@ -16,14 +16,12 @@ class HomePage extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BlocMixinsUsecaseProvider(
+        builder: (context) => UsecaseProvider(
           lazy: false,
           create: (context) => DisposeTestUsecase(),
           child: BlocProvider(
-            create: (context) => PushedCubit(
-              initialCount: state.count,
-              addOneUsecase: context.read<AddOneUsecase>(),
-            ),
+            create: (context) =>
+                PushedCubit(addOneUsecase: context.read<AddOneUsecase>()),
             child: const PushedPage(),
           ),
         ),

@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => CounterRepository(),
-      child: BlocMixinsUsecaseProvider(
+      child: UsecaseProvider(
         create: (context) =>
             AddOneUsecase(counterRepository: context.read<CounterRepository>()),
         child: MaterialApp(

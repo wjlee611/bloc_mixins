@@ -1,7 +1,7 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:example/data/counter_repository.dart';
 
-class AddOneUsecase with BlocMixinsUsecase<int> {
+class AddOneUsecase with UsecaseStream<int> {
   final CounterRepository _counterRepository;
 
   AddOneUsecase({required CounterRepository counterRepository})
