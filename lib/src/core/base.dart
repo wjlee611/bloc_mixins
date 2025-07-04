@@ -6,3 +6,10 @@ abstract class UsecaseStreamable<Result> implements Streamable<Result> {
 
 abstract class UsecaseStreamableSource<Result>
     implements UsecaseStreamable<Result>, Closable {}
+
+abstract class OneTimeStreamable<T extends Object?> {
+  Stream<T> get oneTimeStream;
+}
+
+abstract class OneTimeStreamableSource<T>
+    implements OneTimeStreamable<T>, Closable {}
