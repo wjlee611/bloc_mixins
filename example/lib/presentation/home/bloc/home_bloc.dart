@@ -18,6 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState>
     on<HomeIncrementEvent>(_incrementEventHandler);
     on<HomeResetEvent>((event, emit) {
       emit(state.copyWith(count: 0));
+      _addOneUsecase.result = 0;
       oneTimeEmit(HomeSnackBarModel(message: 'Count has been reset.'));
     });
 

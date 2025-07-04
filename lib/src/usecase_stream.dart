@@ -15,6 +15,10 @@ mixin class UsecaseStream<R> implements UsecaseStreamableSource<R> {
   @override
   R? get result => _lastResult;
 
+  set result(R? value) {
+    _lastResult = value;
+  }
+
   @override
   @mustCallSuper
   FutureOr<void> close() {
