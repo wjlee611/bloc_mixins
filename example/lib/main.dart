@@ -1,6 +1,6 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:example/data/counter_repository.dart';
-import 'package:example/domain/add_one_usecase.dart';
+import 'package:example/domain/usecase/add_one_usecase.dart';
 import 'package:example/presentation/home/bloc/home_bloc.dart';
 import 'package:example/presentation/home/home_page.dart';
 import 'package:flutter/material.dart';

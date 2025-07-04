@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:equatable/equatable.dart';
-import 'package:example/domain/add_one_usecase.dart';
+import 'package:example/domain/usecase/add_one_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PushedCubit extends Cubit<PushedState> {
+const String sameUiEvent = 'sameUiEvent';
+
+class PushedCubit extends Cubit<PushedState> with OneTimeEmitter<String> {
   final AddOneUsecase _addOneUsecase;
 
   late final StreamSubscription<int> _addOneUsecaseSubscription;
@@ -29,6 +32,10 @@ class PushedCubit extends Cubit<PushedState> {
     await _addOneUsecase.call(state.count);
     if (isClosed) return;
     emit(state.copyWith(isLoading: false));
+  }
+
+  void emitSameUiEvent() {
+    oneTimeEmit(sameUiEvent);
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
-import 'package:example/domain/add_one_usecase.dart';
-import 'package:example/domain/dispose_test_usecase.dart';
+import 'package:example/domain/model/home_ui_event_model.dart';
+import 'package:example/domain/usecase/add_one_usecase.dart';
+import 'package:example/domain/usecase/dispose_test_usecase.dart';
 import 'package:example/presentation/home/bloc/home_bloc.dart';
 import 'package:example/presentation/pushed/cubit/pushed_cubit.dart';
 import 'package:example/presentation/pushed/pushed_page.dart';
@@ -47,6 +48,8 @@ class HomePage extends StatelessWidget {
                   children: [
                     const Text('You have pushed the button this many times:'),
                     BlocBuilder<HomeBloc, HomeState>(
+                      buildWhen: (previous, current) =>
+                          previous.count != current.count,
                       builder: (context, state) {
                         return Text(
                           '${state.count}',
@@ -63,11 +66,19 @@ class HomePage extends StatelessWidget {
                     },
                     child: const Text('Cancel'),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<HomeBloc>().add(HomeIncrementEvent());
+                  BlocBuilder<HomeBloc, HomeState>(
+                    buildWhen: (previous, current) =>
+                        previous.isLoading != current.isLoading,
+                    builder: (context, state) {
+                      return TextButton(
+                        onPressed: () {
+                          context.read<HomeBloc>().add(HomeIncrementEvent());
+                        },
+                        child: Text(
+                          state.isLoading ? 'Loading...' : 'Increment',
+                        ),
+                      );
                     },
-                    child: const Text('Increment'),
                   ),
                 ],
               );
@@ -78,14 +89,50 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  void _showResetDialog(BuildContext context, HomeDialogModel value) {
+    final bloc = context.read<HomeBloc>();
+    if (bloc.state.isLoading) return;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Wow'),
+          content: Text(value.content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('NO'),
+            ),
+            TextButton(
+              onPressed: () {
+                bloc.add(value.okEvent);
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocOneTimeListener<HomeBloc, String>(
+    return BlocOneTimeListener<HomeBloc, HomeUiEventModel>(
       listener: (context, value) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(value)));
+        switch (value) {
+          case HomeSnackBarModel():
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(value.message)));
+            break;
+          case HomeDialogModel():
+            _showResetDialog(context, value);
+            break;
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -98,6 +145,8 @@ class HomePage extends StatelessWidget {
             children: [
               const Text('You have pushed the button this many times:'),
               BlocBuilder<HomeBloc, HomeState>(
+                buildWhen: (previous, current) =>
+                    previous.count != current.count,
                 builder: (context, state) {
                   return Text(
                     '${state.count}',
@@ -130,7 +179,7 @@ class HomePage extends StatelessWidget {
               child: Icon(state.isLoading ? Icons.hourglass_empty : Icons.add),
             );
           },
-        ), // This trailing comma makes auto-formatting nicer for build methods.
+        ),
       ),
     );
   }
