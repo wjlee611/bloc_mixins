@@ -29,47 +29,109 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  void _showDialog(BuildContext context) {
+    final bloc = context.read<HomeBloc>();
+    if (bloc.state.isLoading) return;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return BlocProvider.value(
+          value: bloc,
+          child: Builder(
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Dialog'),
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('You have pushed the button this many times:'),
+                    BlocBuilder<HomeBloc, HomeState>(
+                      builder: (context, state) {
+                        return Text(
+                          '${state.count}',
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.read<HomeBloc>().add(HomeIncrementEvent());
+                    },
+                    child: const Text('Increment'),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Bloc Mixins Demo'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                return Text(
-                  '${state.count}',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                );
-              },
-            ),
-            TextButton.icon(
-              onPressed: () => _pushPage(context),
-              label: const Text('Increment from other page'),
-              icon: const Icon(Icons.arrow_circle_right_outlined),
-            ),
-          ],
+    return BlocOneTimeListener<HomeBloc, String>(
+      listener: (context, value) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(value)));
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text('Bloc Mixins Demo'),
         ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('You have pushed the button this many times:'),
+              BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  return Text(
+                    '${state.count}',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  );
+                },
+              ),
+              TextButton.icon(
+                onPressed: () => _pushPage(context),
+                label: const Text('Increment from other page'),
+                icon: const Icon(Icons.arrow_circle_right_outlined),
+              ),
+              TextButton.icon(
+                onPressed: () => _showDialog(context),
+                label: const Text('Increment from dialog'),
+                icon: const Icon(Icons.arrow_circle_up_outlined),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) =>
+              previous.isLoading != current.isLoading,
+          builder: (context, state) {
+            return FloatingActionButton(
+              onPressed: () {
+                context.read<HomeBloc>().add(HomeIncrementEvent());
+              },
+              tooltip: 'Increment',
+              child: Icon(state.isLoading ? Icons.hourglass_empty : Icons.add),
+            );
+          },
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      floatingActionButton: BlocBuilder<HomeBloc, HomeState>(
-        buildWhen: (previous, current) =>
-            previous.isLoading != current.isLoading,
-        builder: (context, state) {
-          return FloatingActionButton(
-            onPressed: () {
-              context.read<HomeBloc>().add(HomeIncrementEvent());
-            },
-            tooltip: 'Increment',
-            child: Icon(state.isLoading ? Icons.hourglass_empty : Icons.add),
-          );
-        },
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:equatable/equatable.dart';
 import 'package:example/domain/add_one_usecase.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class HomeBloc extends Bloc<HomeEvent, HomeState> with OneTimeEmitter<String> {
   final AddOneUsecase _addOneUsecase;
 
   HomeBloc({required AddOneUsecase addOneUsecase})
@@ -27,6 +28,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await emit.forEach(
       _addOneUsecase.stream,
       onData: (data) {
+        oneTimeEmit('Updated count: $data');
         return state.copyWith(count: data);
       },
     );
