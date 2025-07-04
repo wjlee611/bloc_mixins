@@ -4,11 +4,36 @@ import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Signature for the [listener] function which takes the `BuildContext` along
+/// with the `value` and is responsible for executing in response to
+/// `oneTimeEmit(value)` called.
 typedef BlocOneTimeWidgetListener<T> =
     void Function(BuildContext context, T value);
 
+/// {@template bloc_one_time_listener}
+/// A listener widget that receives one-time UI events emitted by
+/// [OneTimeEmitter.oneTimeEmit].
+///
+/// The basic usage is almost similar to [BlocListener].
+///
+/// _Example_
+/// ```dart
+/// BlocOneTimeListener<HomeBloc, HomeUiEventModel>(
+///   listener: (context, value) {
+///     // Handle the value (event)
+///   },
+///   child: ...
+/// )
+/// ```
+///
+/// Subscribes to Bloc's `oneTimeStream` and automatically unsubscribes
+/// when the Bloc changes or the widget is disposed.
+///
+/// For more information, see [OneTimeEmitter.oneTimeEmit].
+/// {@endtemplate}
 class BlocOneTimeListener<B extends OneTimeEmitter<T>, T>
     extends StatefulWidget {
+  ///{@macro bloc_one_time_listener}
   const BlocOneTimeListener({
     super.key,
     required this.child,
@@ -16,10 +41,20 @@ class BlocOneTimeListener<B extends OneTimeEmitter<T>, T>
     required this.listener,
   });
 
+  /// The widget which will be rendered as a descendant of the
+  /// [BlocOneTimeListener].
   final Widget child;
 
+  /// The [bloc] whose one-time UI event will be listened to.
+  ///
+  /// Whenever the [bloc]'s `oneTimeEmit` called, [listener] will be invoked.
   final B? bloc;
 
+  /// The [BlocOneTimeWidgetListener] which will be called on
+  /// every `oneTimeEmit` call.
+  ///
+  /// This [listener] should be used for any code which needs to execute
+  /// in response to a `oneTimeEmit` call.
   final BlocOneTimeWidgetListener<T> listener;
 
   @override
