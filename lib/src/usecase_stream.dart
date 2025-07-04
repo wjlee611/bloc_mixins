@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc_mixins/src/core/base.dart';
 import 'package:flutter/foundation.dart';
 
-mixin class UsecaseStream<R> implements UsecaseStreamableSource<R> {
+mixin UsecaseStream<R> implements UsecaseStreamableSource<R> {
   final _streamController = StreamController<R>.broadcast();
 
   @override
