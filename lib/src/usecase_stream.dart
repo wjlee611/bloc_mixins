@@ -20,7 +20,7 @@ import 'package:flutter/foundation.dart';
 /// {@template yield_data_usage}
 /// _Example_
 /// ```dart
-/// class ExUseCase with BaseStreamUsecase<int> {
+/// class ExUseCase with UsecaseStream<int> {
 ///   final ExRepository _exRepository;
 ///
 ///   void call(int num) async {
@@ -44,7 +44,7 @@ import 'package:flutter/foundation.dart';
 /// ```dart
 /// on<InitStreamEvent>((event, emit)) async {
 ///   await emit.forEach(
-///     _exUseCase.stream, // Usecase의 stream
+///     _exUseCase.stream, // Stream from UsecaseStream
 ///     onData: (data) => BlocState(data: data),
 ///   );
 /// }
