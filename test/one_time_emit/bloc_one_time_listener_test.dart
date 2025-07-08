@@ -5,14 +5,14 @@ import 'widget/multiple_bloc_provider_app.dart';
 import 'widget/single_bloc_injected_app.dart';
 
 void main() {
-  group('BlocOneTimeListener, bloc injected', () {
+  group('BlocOneTimeListener', () {
     late OTEBloc oteBloc;
 
-    setUpAll(() {
+    setUp(() {
       oteBloc = OTEBloc();
     });
 
-    tearDownAll(() {
+    tearDown(() {
       oteBloc.close();
     });
 

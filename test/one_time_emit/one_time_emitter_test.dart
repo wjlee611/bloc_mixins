@@ -8,14 +8,14 @@ import 'bloc/ote_bloc.dart' as b;
 import 'bloc/ote_cubit.dart' as c;
 
 void main() {
-  group('bloc_test', () {
+  group('OneTimeEmitter bloc', () {
     late b.OTEBloc oteBloc;
 
-    setUpAll(() {
+    setUp(() {
       oteBloc = b.OTEBloc();
     });
 
-    tearDownAll(() {
+    tearDown(() {
       oteBloc.close();
     });
 
@@ -31,12 +31,12 @@ void main() {
       expectLater(
         oteBloc.oneTimeStream,
         emitsInOrder([
-          for (var _ in List.generate(100, (index) => b.oneTimeEmitValue))
+          for (var _ in List.generate(100, (index) => index))
             b.oneTimeEmitValue,
         ]),
       );
 
-      for (var _ in List.generate(100, (index) => b.oneTimeEmitValue)) {
+      for (var _ in List.generate(100, (index) => index)) {
         oteBloc.add(b.OTEOpenDialogEvent());
       }
     }, timeout: const Timeout(Duration(seconds: 1)));
@@ -77,14 +77,14 @@ void main() {
     }, timeout: const Timeout(Duration(seconds: 1)));
   });
 
-  group('cubit_test', () {
+  group('OneTimeEmitter cubit', () {
     late c.OTECubit oteCubit;
 
-    setUpAll(() {
+    setUp(() {
       oteCubit = c.OTECubit();
     });
 
-    tearDownAll(() {
+    tearDown(() {
       oteCubit.close();
     });
 
@@ -100,12 +100,12 @@ void main() {
       expectLater(
         oteCubit.oneTimeStream,
         emitsInOrder([
-          for (var _ in List.generate(100, (index) => c.oneTimeEmitValue))
+          for (var _ in List.generate(100, (index) => index))
             c.oneTimeEmitValue,
         ]),
       );
 
-      for (var _ in List.generate(100, (index) => c.oneTimeEmitValue)) {
+      for (var _ in List.generate(100, (index) => index)) {
         oteCubit.openDialog();
       }
     }, timeout: const Timeout(Duration(seconds: 1)));
