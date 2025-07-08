@@ -1,3 +1,8 @@
+## 0.0.2-dev.2
+
+- DOCS: Fix comments typo
+- TEST: Add test case for v0.0.1-dev.1
+
 ## 0.0.1-dev.1
 
 - FEAT: Initial commit
