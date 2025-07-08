@@ -131,3 +131,7 @@ BlocListener와 동일한 API로 one-time UI 이벤트 수신을 위한 로직�
 Bloc 내부와 달리 contexted widget에서 제공하는 context에 접근할 수 있으므로, snackbar, dialog 띄우기에 활용할 수 있습니다.
 
 자세한 코드 예시는 [example](https://github.com/wjlee611/bloc_mixins/blob/b55a44c46c0127316d8867d9118d1e2bdd9173b4/example/lib/presentation/home/home_page.dart#L123)을 참고해주세요.
+
+## API 문서
+
+더 디테일한 API 문서는 [API reference](https://pub.dev/documentation/bloc_mixins/latest/bloc_mixins/)를 참고해주세요.

@@ -131,3 +131,7 @@ You can configure logic for receiving one-time UI events with the same API as Bl
 Unlike inside a Bloc, you can access the context provided by the contexted widget, so you can use it to display snackbars and dialogs.
 
 For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/b55a44c46c0127316d8867d9118d1e2bdd9173b4/example/lib/presentation/home/home_page.dart#L123).
+
+## API Documentation
+
+For more detailed API documentation, please refer to the [API reference](https://pub.dev/documentation/bloc_mixins/latest/bloc_mixins/).
