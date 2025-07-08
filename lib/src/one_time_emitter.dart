@@ -80,7 +80,6 @@ mixin OneTimeEmitter<T> on Closable implements OneTimeStreamableSource<T> {
   /// Closes the stream controller for [oneTimeStream] to release resources.
   @override
   @mustCallSuper
-  @protected
   Future<void> close() async {
     _streamController.close();
     return super.close();
