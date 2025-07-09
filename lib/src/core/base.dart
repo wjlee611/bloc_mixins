@@ -32,3 +32,10 @@ abstract class OneTimeStreamable<T extends Object?> {
 /// However, you must use [close] appropriately.
 abstract class OneTimeStreamableSource<T>
     implements OneTimeStreamable<T>, Closable {}
+
+abstract class InitialStateStoreable<S> {
+  /// The initial state of the Bloc.
+  ///
+  /// This is used to reset the Bloc's state when needed.
+  S get initialState;
+}
