@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 part 'local_event.dart';
 part 'local_state.dart';
 
-class LocalCubit extends Cubit<LocalState> with BlocResetter<LocalState> {
+class LocalCubit extends Cubit<LocalState> with BlocResetter {
   LocalCubit() : super(LocalInitialState()) {
     addResetRegistry(
       onReset: () {

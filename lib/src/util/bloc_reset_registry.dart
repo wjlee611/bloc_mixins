@@ -1,4 +1,5 @@
 import 'package:bloc_mixins/src/bloc_resetter.dart';
+import 'package:bloc_mixins/src/core/exception.dart';
 
 class BlocResetRegistry {
   static final List<BlocResetter> _singletonBlocs = [];
@@ -9,7 +10,7 @@ class BlocResetRegistry {
         return bloc;
       }
     }
-    throw Exception('Bloc of type $T not found in the collection.');
+    throw BlocResetRegistryGetNullException(T);
   }
 
   static int get registeredBlocCount => _singletonBlocs.length;

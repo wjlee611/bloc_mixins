@@ -5,8 +5,7 @@ import 'package:equatable/equatable.dart';
 part 'global_event.dart';
 part 'global_state.dart';
 
-class GlobalBloc extends Bloc<GlobalEvent, GlobalState>
-    with BlocResetter<GlobalState> {
+class GlobalBloc extends Bloc<GlobalEvent, GlobalState> with BlocResetter {
   GlobalBloc() : super(GlobalInitialState()) {
     addResetRegistry(
       onReset: () {

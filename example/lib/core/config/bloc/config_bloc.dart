@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 part 'config_event.dart';
 part 'config_state.dart';
 
-class ConfigBloc extends Bloc<ConfigEvent, ConfigState>
-    with BlocResetter<ConfigState> {
+class ConfigBloc extends Bloc<ConfigEvent, ConfigState> with BlocResetter {
   ConfigBloc() : super(ConfigInitialState()) {
     addResetRegistry(
       onReset: () {
