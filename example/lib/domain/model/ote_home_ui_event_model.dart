@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:example/presentation/one_time_emit/bloc/ote_home_bloc.dart';
+import 'package:example/presentation/one_time_emitter/bloc/ote_home_bloc.dart';
 
 sealed class OTEHomeUiEventModel extends Equatable {}
 

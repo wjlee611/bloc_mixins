@@ -1,11 +1,11 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:example/domain/model/ote_home_ui_event_model.dart';
-import 'package:example/presentation/one_time_emit/bloc/ote_home_bloc.dart';
+import 'package:example/presentation/one_time_emitter/bloc/ote_home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OneTimeEmitHomePage extends StatelessWidget {
-  const OneTimeEmitHomePage({super.key});
+class OneTimeEmitterHomePage extends StatelessWidget {
+  const OneTimeEmitterHomePage({super.key});
 
   void _showDialog(BuildContext context) {
     final bloc = context.read<OTEHomeBloc>();
