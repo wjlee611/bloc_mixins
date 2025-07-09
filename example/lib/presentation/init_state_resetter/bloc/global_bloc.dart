@@ -7,7 +7,7 @@ part 'global_state.dart';
 
 class GlobalBloc extends Bloc<GlobalEvent, GlobalState> with BlocResetter {
   GlobalBloc() : super(GlobalInitialState()) {
-    addResetRegistry(
+    register(
       onReset: () {
         add(GlobalLoadEvent());
       },

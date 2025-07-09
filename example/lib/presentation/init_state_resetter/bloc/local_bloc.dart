@@ -7,7 +7,7 @@ part 'local_state.dart';
 
 class LocalCubit extends Cubit<LocalState> with BlocResetter {
   LocalCubit() : super(LocalInitialState()) {
-    addResetRegistry(
+    register(
       onReset: () {
         loadEvent();
       },

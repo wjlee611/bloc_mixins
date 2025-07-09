@@ -33,9 +33,14 @@ abstract class OneTimeStreamable<T extends Object?> {
 abstract class OneTimeStreamableSource<T>
     implements OneTimeStreamable<T>, Closable {}
 
-abstract class InitialStateStoreable<S> {
-  /// The initial state of the Bloc.
-  ///
-  /// This is used to reset the Bloc's state when needed.
+abstract class Resettable<S> {
   S get initialState;
+
+  void reset({bool withCallback = true});
+}
+
+abstract class ResetRegisterable<S> implements Resettable<S> {
+  void register({Function()? onReset});
+
+  void unregister();
 }

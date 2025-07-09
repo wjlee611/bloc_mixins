@@ -8,7 +8,7 @@ part 'config_state.dart';
 
 class ConfigBloc extends Bloc<ConfigEvent, ConfigState> with BlocResetter {
   ConfigBloc() : super(ConfigInitialState()) {
-    addResetRegistry(
+    register(
       onReset: () {
         add(ConfigLoadEvent());
       },

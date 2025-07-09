@@ -2,17 +2,12 @@ import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:bloc_mixins/src/core/base.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-typedef BlocResetterOnReset = void Function();
-
-mixin BlocResetter<S> on BlocBase<S> implements InitialStateStoreable<S> {
+mixin BlocResetter<S> on BlocBase<S> implements ResetRegisterable<S> {
   /// The initial state of the Bloc.
   /// This is used to reset the Bloc's state when needed.
   S? _initialState;
 
-  BlocResetterOnReset? _onReset;
-
-  @override
-  S get initialState => _initialState ?? super.state;
+  Function()? _onReset;
 
   @override
   get state {
@@ -22,10 +17,14 @@ mixin BlocResetter<S> on BlocBase<S> implements InitialStateStoreable<S> {
 
   @override
   Future<void> close() {
-    removeResetRegistry();
+    unregister();
     return super.close();
   }
 
+  @override
+  S get initialState => _initialState ?? super.state;
+
+  @override
   void reset({bool withCallback = true}) {
     // ignore: invalid_use_of_visible_for_testing_member
     super.emit(initialState);
@@ -34,13 +33,15 @@ mixin BlocResetter<S> on BlocBase<S> implements InitialStateStoreable<S> {
     }
   }
 
-  void addResetRegistry({BlocResetterOnReset? onReset}) {
+  @override
+  void register({Function()? onReset}) {
     _initialState = super.state;
     _onReset = onReset;
     BlocResetRegistry.addBloc(this);
   }
 
-  void removeResetRegistry() {
+  @override
+  void unregister() {
     _onReset = null;
     BlocResetRegistry.removeBloc(this);
   }
