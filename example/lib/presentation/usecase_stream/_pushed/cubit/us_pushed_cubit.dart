@@ -1,20 +1,17 @@
 import 'dart:async';
 
-import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:equatable/equatable.dart';
 import 'package:example/domain/usecase/add_one_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const String sameUiEvent = 'sameUiEvent';
-
-class PushedCubit extends Cubit<PushedState> with OneTimeEmitter<String> {
+class USPushedCubit extends Cubit<USPushedState> {
   final AddOneUsecase _addOneUsecase;
 
   late final StreamSubscription<int> _addOneUsecaseSubscription;
 
-  PushedCubit({required AddOneUsecase addOneUsecase})
+  USPushedCubit({required AddOneUsecase addOneUsecase})
     : _addOneUsecase = addOneUsecase,
-      super(PushedState.init(initialCount: addOneUsecase.result ?? 0)) {
+      super(USPushedState.init(initialCount: addOneUsecase.result ?? 0)) {
     _addOneUsecaseSubscription = _addOneUsecase.stream.listen((data) {
       emit(state.copyWith(count: data));
     });
@@ -29,28 +26,24 @@ class PushedCubit extends Cubit<PushedState> with OneTimeEmitter<String> {
   Future<void> increment() async {
     if (state.isLoading) return;
     emit(state.copyWith(isLoading: true));
-    await _addOneUsecase.call(state.count);
+    await _addOneUsecase.call(state.count, delay: 2000);
     if (isClosed) return;
     emit(state.copyWith(isLoading: false));
   }
-
-  void emitSameUiEvent() {
-    oneTimeEmit(sameUiEvent);
-  }
 }
 
-class PushedState extends Equatable {
+class USPushedState extends Equatable {
   final int count;
   final bool isLoading;
 
-  const PushedState({required this.count, required this.isLoading});
+  const USPushedState({required this.count, required this.isLoading});
 
-  const PushedState.init({int initialCount = 0})
+  const USPushedState.init({int initialCount = 0})
     : count = initialCount,
       isLoading = false;
 
-  PushedState copyWith({int? count, bool? isLoading}) {
-    return PushedState(
+  USPushedState copyWith({int? count, bool? isLoading}) {
+    return USPushedState(
       count: count ?? this.count,
       isLoading: isLoading ?? this.isLoading,
     );

@@ -7,8 +7,8 @@ class AddOneUsecase with UsecaseStream<int> {
   AddOneUsecase({required CounterRepository counterRepository})
     : _counterRepository = counterRepository;
 
-  Future<int> call(int value, {int delay = 2}) async {
-    final result = await _counterRepository.increment(value, delay);
+  Future<int> call(int value, {int delay = 200}) async {
+    final result = await _counterRepository.increment(value, delay: delay);
     yieldData(result);
     return result;
   }
