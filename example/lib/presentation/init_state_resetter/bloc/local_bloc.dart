@@ -5,23 +5,18 @@ import 'package:equatable/equatable.dart';
 part 'local_event.dart';
 part 'local_state.dart';
 
-class LocalBloc extends Bloc<LocalEvent, LocalState>
-    with BlocResetter<LocalEvent, LocalState> {
-  LocalBloc() : super(LocalInitialState()) {
-    addResetRegistry(onReset: (bloc) => bloc.add(LocalLoadEvent()));
+class LocalCubit extends Cubit<LocalState> with BlocResetter<LocalState> {
+  LocalCubit() : super(LocalInitialState()) {
+    addResetRegistry(
+      onReset: () {
+        loadEvent();
+      },
+    );
 
-    on<LocalLoadEvent>(_loadEventHandler);
-
-    add(LocalLoadEvent());
+    loadEvent();
   }
 
-  // =========================================
-  // MARK: LoadEvent
-  // =========================================
-  Future<void> _loadEventHandler(
-    LocalLoadEvent event,
-    Emitter<LocalState> emit,
-  ) async {
+  void loadEvent() async {
     emit(LocalLoadingState());
     await Future.delayed(Duration(seconds: 2));
     emit(LocalLoadedState());

@@ -107,7 +107,7 @@ class ExampleRoute extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
-                      create: (context) => LocalBloc(),
+                      create: (context) => LocalCubit(),
                       child: InitStateResetterHomePage(),
                     ),
                   ),

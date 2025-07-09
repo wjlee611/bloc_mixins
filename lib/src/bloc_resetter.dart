@@ -2,14 +2,14 @@ import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:bloc_mixins/src/core/base.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-typedef BlocResetterOnReset<B> = void Function(B bloc);
+typedef BlocResetterOnReset = void Function();
 
-mixin BlocResetter<E, S> on Bloc<E, S> implements InitialStateStoreable<S> {
+mixin BlocResetter<S> on BlocBase<S> implements InitialStateStoreable<S> {
   /// The initial state of the Bloc.
   /// This is used to reset the Bloc's state when needed.
   S? _initialState;
 
-  BlocResetterOnReset<Bloc<E, S>>? _onReset;
+  BlocResetterOnReset? _onReset;
 
   @override
   S get initialState => _initialState ?? super.state;
@@ -30,11 +30,11 @@ mixin BlocResetter<E, S> on Bloc<E, S> implements InitialStateStoreable<S> {
     // ignore: invalid_use_of_visible_for_testing_member
     super.emit(initialState);
     if (withCallback) {
-      _onReset?.call(this);
+      _onReset?.call();
     }
   }
 
-  void addResetRegistry({BlocResetterOnReset<Bloc<E, S>>? onReset}) {
+  void addResetRegistry({BlocResetterOnReset? onReset}) {
     _initialState = super.state;
     _onReset = onReset;
     BlocResetRegistry.addBloc(this);

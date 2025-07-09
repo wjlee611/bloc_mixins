@@ -27,7 +27,7 @@ class InitStateResetterHomePage extends StatelessWidget {
                 );
               },
             ),
-            BlocBuilder<LocalBloc, LocalState>(
+            BlocBuilder<LocalCubit, LocalState>(
               builder: (context, state) {
                 return Text(
                   '$state',

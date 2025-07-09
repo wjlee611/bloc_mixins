@@ -7,9 +7,13 @@ part 'config_event.dart';
 part 'config_state.dart';
 
 class ConfigBloc extends Bloc<ConfigEvent, ConfigState>
-    with BlocResetter<ConfigEvent, ConfigState> {
+    with BlocResetter<ConfigState> {
   ConfigBloc() : super(ConfigInitialState()) {
-    addResetRegistry(onReset: (bloc) => bloc.add(ConfigLoadEvent()));
+    addResetRegistry(
+      onReset: () {
+        add(ConfigLoadEvent());
+      },
+    );
 
     on<ConfigLoadEvent>(_loadEventHandler);
     on<ConfigChangeSeedColorEvent>(_changeSeedColorEventHandler);
