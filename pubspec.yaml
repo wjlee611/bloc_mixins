@@ -1,6 +1,6 @@
 name: bloc_mixins
 description: "A collection of mixins that provide useful features for Bloc."
-version: 0.0.2-dev.2
+version: 0.0.3-dev.3
 repository: https://github.com/wjlee611/bloc_mixins
 issue_tracker: https://github.com/wjlee611/bloc_mixins/issues
 topics: 
