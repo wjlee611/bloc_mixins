@@ -1,10 +1,10 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:example/core/config/bloc/config_bloc.dart';
-import 'package:example/presentation/init_state_resetter/bloc/global_bloc.dart';
+import 'package:example/presentation/bloc_resetter/bloc/global_bloc.dart';
 import 'package:example/data/counter_repository.dart';
 import 'package:example/domain/usecase/add_one_usecase.dart';
-import 'package:example/presentation/init_state_resetter/bloc/local_bloc.dart';
-import 'package:example/presentation/init_state_resetter/init_state_resetter_home_page.dart';
+import 'package:example/presentation/bloc_resetter/bloc/local_bloc.dart';
+import 'package:example/presentation/bloc_resetter/bloc_resetter_home_page.dart';
 import 'package:example/presentation/one_time_emitter/bloc/ote_home_bloc.dart';
 import 'package:example/presentation/one_time_emitter/one_time_emitter_home_page.dart';
 import 'package:example/presentation/usecase_stream/bloc/us_home_bloc.dart';
@@ -108,7 +108,7 @@ class ExampleRoute extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
                       create: (context) => LocalCubit(),
-                      child: InitStateResetterHomePage(),
+                      child: BlocResetterHomePage(),
                     ),
                   ),
                 );

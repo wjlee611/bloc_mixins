@@ -1,19 +1,19 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
-import 'package:example/presentation/init_state_resetter/bloc/global_bloc.dart';
-import 'package:example/presentation/init_state_resetter/bloc/local_bloc.dart';
+import 'package:example/presentation/bloc_resetter/bloc/global_bloc.dart';
+import 'package:example/presentation/bloc_resetter/bloc/local_bloc.dart';
 import 'package:example/widget/registered_blocs_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class InitStateResetterHomePage extends StatelessWidget {
-  const InitStateResetterHomePage({super.key});
+class BlocResetterHomePage extends StatelessWidget {
+  const BlocResetterHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('InitStateResetter Demo'),
+        title: Text('BlocResetter Demo'),
       ),
       body: Center(
         child: Column(
