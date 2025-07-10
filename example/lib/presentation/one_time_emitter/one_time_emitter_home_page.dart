@@ -1,37 +1,14 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
-import 'package:example/domain/model/home_ui_event_model.dart';
-import 'package:example/domain/usecase/add_one_usecase.dart';
-import 'package:example/domain/usecase/dispose_test_usecase.dart';
-import 'package:example/presentation/home/bloc/home_bloc.dart';
-import 'package:example/presentation/pushed/cubit/pushed_cubit.dart';
-import 'package:example/presentation/pushed/pushed_page.dart';
+import 'package:example/domain/model/ote_home_ui_event_model.dart';
+import 'package:example/presentation/one_time_emitter/bloc/ote_home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  void _pushPage(BuildContext context) {
-    final state = context.read<HomeBloc>().state;
-    if (state.isLoading) return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UsecaseProvider(
-          lazy: false,
-          create: (context) => DisposeTestUsecase(),
-          child: BlocProvider(
-            create: (context) =>
-                PushedCubit(addOneUsecase: context.read<AddOneUsecase>()),
-            child: const PushedPage(),
-          ),
-        ),
-      ),
-    );
-  }
+class OneTimeEmitterHomePage extends StatelessWidget {
+  const OneTimeEmitterHomePage({super.key});
 
   void _showDialog(BuildContext context) {
-    final bloc = context.read<HomeBloc>();
+    final bloc = context.read<OTEHomeBloc>();
     if (bloc.state.isLoading) return;
     showDialog(
       context: context,
@@ -46,8 +23,8 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('You have pushed the button this many times:'),
-                    BlocBuilder<HomeBloc, HomeState>(
+                    const Text('Count:'),
+                    BlocBuilder<OTEHomeBloc, OTEHomeState>(
                       buildWhen: (previous, current) =>
                           previous.count != current.count,
                       builder: (context, state) {
@@ -66,13 +43,15 @@ class HomePage extends StatelessWidget {
                     },
                     child: const Text('Cancel'),
                   ),
-                  BlocBuilder<HomeBloc, HomeState>(
+                  BlocBuilder<OTEHomeBloc, OTEHomeState>(
                     buildWhen: (previous, current) =>
                         previous.isLoading != current.isLoading,
                     builder: (context, state) {
                       return TextButton(
                         onPressed: () {
-                          context.read<HomeBloc>().add(HomeIncrementEvent());
+                          context.read<OTEHomeBloc>().add(
+                            OTEHomeIncrementEvent(),
+                          );
                         },
                         child: Text(
                           state.isLoading ? 'Loading...' : 'Increment',
@@ -89,8 +68,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _showResetDialog(BuildContext context, HomeDialogModel value) {
-    final bloc = context.read<HomeBloc>();
+  void _showResetDialog(BuildContext context, OTEHomeDialogModel value) {
+    final bloc = context.read<OTEHomeBloc>();
     if (bloc.state.isLoading) return;
     showDialog(
       context: context,
@@ -120,16 +99,16 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocOneTimeListener<HomeBloc, HomeUiEventModel>(
+    return BlocOneTimeListener<OTEHomeBloc, OTEHomeUiEventModel>(
       listener: (context, value) {
         switch (value) {
-          case HomeSnackBarModel():
+          case OTEHomeSnackBarModel():
             ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(value.message)));
             break;
-          case HomeDialogModel():
+          case OTEHomeDialogModel():
             _showResetDialog(context, value);
             break;
         }
@@ -137,14 +116,14 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('Bloc Mixins Demo'),
+          title: Text('OneTimeEmitter Demo'),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('You have pushed the button this many times:'),
-              BlocBuilder<HomeBloc, HomeState>(
+              const Text('Count:'),
+              BlocBuilder<OTEHomeBloc, OTEHomeState>(
                 buildWhen: (previous, current) =>
                     previous.count != current.count,
                 builder: (context, state) {
@@ -155,11 +134,6 @@ class HomePage extends StatelessWidget {
                 },
               ),
               TextButton.icon(
-                onPressed: () => _pushPage(context),
-                label: const Text('Increment from other page'),
-                icon: const Icon(Icons.arrow_circle_right_outlined),
-              ),
-              TextButton.icon(
                 onPressed: () => _showDialog(context),
                 label: const Text('Increment from dialog'),
                 icon: const Icon(Icons.arrow_circle_up_outlined),
@@ -167,13 +141,13 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: BlocBuilder<HomeBloc, HomeState>(
+        floatingActionButton: BlocBuilder<OTEHomeBloc, OTEHomeState>(
           buildWhen: (previous, current) =>
               previous.isLoading != current.isLoading,
           builder: (context, state) {
             return FloatingActionButton(
               onPressed: () {
-                context.read<HomeBloc>().add(HomeIncrementEvent());
+                context.read<OTEHomeBloc>().add(OTEHomeIncrementEvent());
               },
               tooltip: 'Increment',
               child: Icon(state.isLoading ? Icons.hourglass_empty : Icons.add),
