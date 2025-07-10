@@ -11,6 +11,13 @@ A collection of mixins that provide useful features for Bloc.
 3. Mixin lifecycle is also controlled along with flutter widget lifecycle (using provided provider).
 4. Follows the best practices of the official Bloc documentation. (Customization is possible)
 
+You can use this package in the following situations:
+
+- When you need to completely separate the responsibility of sharing state between Blocs from the Presentation Layer (UI).
+- When you have many one-time UI events like dialogs and snackbars that are difficult to manage in BlocState.
+- When you use Bloc as a singleton object.
+- When you have many Blocs that are not initialized by the widget lifecycle.
+
 ## Mixins & Widgets
 
 > [!TIP]
@@ -22,6 +29,8 @@ A collection of mixins that provide useful features for Bloc.
 > - [UsecaseProvider](#usecaseprovider)
 > - [OneTimeEmitter](#onetimeemitter)
 > - [BlocOneTimeListener](#bloconetimelistener)
+> - [BlocResetter](#blocresetter)
+> - [BlocResetRegistry](#blocresetregistry)
 
 ### UsecaseStream
 
@@ -53,7 +62,7 @@ addOneUsecase.stream
 State sharing in the Domain Layer can be achieved by providing the same Usecase instance to the stream parameter of `emit.forEach` in multiple Blocs.  
 Alternatively, you can manage it via `StreamSubscription`.
 
-For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/b55a44c46c0127316d8867d9118d1e2bdd9173b4/example/lib/presentation/home/bloc/home_bloc.dart#L36)
+For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/usecase_stream/bloc/us_home_bloc.dart#L28)
 
 ### UsecaseProvider
 
@@ -84,7 +93,7 @@ void _pushPage(BuildContext context) {
 
 With the same API as RepositoryProvider, you can provide Usecases that inherit UsecaseStream to Blocs in the child widget tree.
 
-For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/b55a44c46c0127316d8867d9118d1e2bdd9173b4/example/lib/main.dart#L19).
+For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/usecase_stream/usecase_stream_home_page.dart#L20).
 
 ### OneTimeEmitter
 
@@ -110,7 +119,7 @@ class PushedCubit extends Cubit<PushedState> with OneTimeEmitter<String> {
 Just as Bloc provides a stream for state control, `oneTimeStream` is provided for one-time UI events.  
 To register an event to the `oneTimeStream`, you can use the `oneTimeEmit` method introduced above, or use `oneTimeStream.add`.
 
-For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/b55a44c46c0127316d8867d9118d1e2bdd9173b4/example/lib/presentation/home/bloc/home_bloc.dart#L41).
+For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/one_time_emitter/bloc/ote_home_bloc.dart#L36).
 
 ### BlocOneTimeListener
 
@@ -130,7 +139,107 @@ BlocOneTimeListener<PushedCubit, String>(
 You can configure logic for receiving one-time UI events with the same API as BlocListener.  
 Unlike inside a Bloc, you can access the context provided by the contexted widget, so you can use it to display snackbars and dialogs.
 
-For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/b55a44c46c0127316d8867d9118d1e2bdd9173b4/example/lib/presentation/home/home_page.dart#L123).
+For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/one_time_emitter/one_time_emitter_home_page.dart#L102).
+
+### BlocResetter
+
+<img src="https://github.com/user-attachments/assets/7e158d90-dfae-47f7-94a0-1d8809b8f905" width="300px" />
+
+In general, if you want to reset the Bloc to its initial state, you can do so by calling `emit(InitState())` or by removing the Bloc from the widget tree and then reinitializing it.  
+However, for Bloc that are not removed from the widget tree*, you need to create an event class for calling `emit(InitState())`, and if there are a lot of them, it becomes difficult to manage.
+
+> [!NOTE]
+> `*Bloc that are not removed from the widget tree`
+> - Provided by BlocProvider at the top of MaterialApp
+> - Initialized as a singleton near the main function
+
+This package provides a way to easily initialize multiple Blocs that are not dependent on the widget lifecycle introduced above.
+
+Blocs that inherit the `BlocResetter` mixin can use the `reset` method as well as the `register` and `unregister` methods.
+
+```dart
+class GlobalBloc extends Bloc<GlobalEvent, GlobalState> with BlocResetter {
+  GlobalBloc() : super(GlobalInitialState()) {
+    register(
+      onReset: () {
+        add(GlobalLoadEvent());
+      },
+    );
+
+    on<GlobalLoadEvent>(_loadEventHandler);
+
+    add(GlobalLoadEvent());
+  }
+  ...
+```
+
+The `BlocResetter` mixin captures the initial state of the Bloc and emits the captured initial state when `reset` is called (with any handlers registered with `onReset` called as well, if necessary).  
+However, this mixin alone cannot do anything.
+
+For effective use, call `register` in the constructor and register it with the [BlocResetRegistry](#blocresetregistry) static utility class before using it.
+
+> [!TIP]
+> `unregister`는 [BlocResetRegistry](#blocresetregistry)에서 Bloc을 제거합니다.`unregister` removes a Bloc from the [BlocResetRegistry](#blocresetregistry).  
+> However, you will rarely need to use it since the `unregister` method is automatically called when Bloc.close is called.
+
+For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/bloc_resetter/bloc/global_bloc.dart#L10).
+
+### BlocResetRegistry
+
+<img src="https://github.com/user-attachments/assets/bed0c8c8-e392-4f6f-954e-bbecf48a0a0d" width="300px" />
+
+A static utility class that must be used together with [BlocResetter](#blocresetter).
+
+#### `addBloc`, `removeBloc`
+
+You can add or remove Blocs to be managed by the `BlocResetRegistry` using these two methods.  
+Adding or removing a Bloc does not affect its lifecycle, but it will be automatically added or removed according to the Bloc's lifecycle (if `register` is called in the constructor).  
+(That is, you will rarely need to use both methods.)
+
+#### `resetBlocs`
+
+Resets the Blocs registered in `BlocResetRegistry` to their initial state.  
+If `withCallback` is `true` (the default), the `onReset` callbacks registered with `BlocResetter.register` will also be executed.
+
+#### `get<T>`
+
+You can retrieve a Bloc registered in `BlocResetRegistry` just like `context.get`.  
+
+> [!TIP]
+> You can use Bloc as a singleton object in the following way:
+> ```dart
+> class ConfigBloc extends Bloc<ConfigEvent, ConfigState> with BlocResetter {
+>   ConfigBloc() : super(ConfigInitState() {
+>     register();
+>   }
+>   // Same as any other Bloc
+> }
+> 
+> void main() {
+>   ConfigBloc(); // BlocResetter automatically registers with BlocResetRegister.
+>   runApp(const MyApp());
+> }
+>
+> final configBloc = BlocResetRegister.get<ConfigBloc>(); // Global access
+> ```
+
+> [!WARNING]
+> Do not access the Bloc provided by `BlocProvider` globally, as it will be automatically added or removed in `BlocResetRegister` according to the Bloc's lifecycle.  
+> While it is not a problem to access it, doing so after the Bloc has been removed from the widget tree will result in a `BlocResetRegistryGetNullException`.
+>
+> ```dart
+> class Bloc1 extends Bloc<Bloc1Event, Bloc1State> with BlocResetter {
+>   Bloc1() : super(Bloc1InitState() {...}
+>
+>   Future<void> _eventHandler(...) async {
+>     final bloc2 = BlocResetRegister.get<Bloc2>(); // MIGHT THROW EXCEPTION!
+>   }
+> }
+> ```
+>
+> That is, only use [BlocResetter](#blocresetter) for Blocs that guarantee immutability throughout their lifecycle.
+
+For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/bloc_resetter/bloc_resetter_home_page.dart#L40).
 
 ## API Documentation
 
