@@ -6,7 +6,8 @@ import '../bloc/ote_bloc.dart';
 class SingleBlocInjectedApp extends StatefulWidget {
   final BlocOneTimeWidgetListener<String> listener;
 
-  const SingleBlocInjectedApp({super.key, required this.listener});
+  const SingleBlocInjectedApp({Key? key, required this.listener})
+      : super(key: key);
 
   @override
   State<SingleBlocInjectedApp> createState() => _SingleBlocInjectedAppState();

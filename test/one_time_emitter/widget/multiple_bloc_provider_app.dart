@@ -7,7 +7,8 @@ import '../bloc/ote_bloc.dart';
 class MultipleBlocProviderApp extends StatefulWidget {
   final BlocOneTimeWidgetListener<String> listener;
 
-  const MultipleBlocProviderApp({super.key, required this.listener});
+  const MultipleBlocProviderApp({Key? key, required this.listener})
+      : super(key: key);
 
   @override
   State<MultipleBlocProviderApp> createState() =>

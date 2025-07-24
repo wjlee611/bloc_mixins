@@ -73,7 +73,7 @@ void main() {
         emitsInOrder([
           BRMainAutoLoadingState(),
           BRMainAutoLoadedState(),
-
+          //
           BRMainAutoInitialState(),
           BRMainAutoLoadingState(),
           BRMainAutoLoadedState(),
@@ -92,10 +92,10 @@ void main() {
         emitsInOrder([
           BRMainAutoLoadingState(),
           BRMainAutoLoadedState(),
-
+          //
           BRMainAutoLoadingState(),
           BRMainAutoLoadedState(),
-
+          //
           BRMainAutoInitialState(),
           BRMainAutoLoadingState(),
           BRMainAutoLoadedState(),
@@ -136,7 +136,7 @@ void main() {
         emitsInOrder([
           BRGlobalAutoLoadingState(),
           BRGlobalAutoLoadedState(),
-
+          //
           BRGlobalAutoInitialState(),
           BRGlobalAutoLoadingState(),
           BRGlobalAutoLoadedState(),
@@ -155,10 +155,10 @@ void main() {
         emitsInOrder([
           BRGlobalAutoLoadingState(),
           BRGlobalAutoLoadedState(),
-
+          //
           BRGlobalAutoLoadingState(),
           BRGlobalAutoLoadedState(),
-
+          //
           BRGlobalAutoInitialState(),
           BRGlobalAutoLoadingState(),
           BRGlobalAutoLoadedState(),

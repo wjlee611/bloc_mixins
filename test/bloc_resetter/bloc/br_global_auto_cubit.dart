@@ -16,7 +16,8 @@ class BRGlobalAutoCubit extends Cubit<BRGlobalAutoState> with BlocResetter {
   }
 }
 
-sealed class BRGlobalAutoState {}
+/// SEALED CLASS
+abstract class BRGlobalAutoState {}
 
 class BRGlobalAutoInitialState extends BRGlobalAutoState {
   @override

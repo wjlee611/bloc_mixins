@@ -1,4 +1,5 @@
 import 'package:bloc_mixins/bloc_mixins.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// {@template usecase_provider}
@@ -10,15 +11,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class UsecaseProvider<T extends UsecaseStream> extends RepositoryProvider<T> {
   /// {@macro usecase_provider}
   UsecaseProvider({
-    required super.create,
+    required T Function(BuildContext context) create,
     void Function(T value)? dispose,
-    super.key,
-    super.child,
-    super.lazy,
-  }) : super(dispose: dispose ?? (value) => value.close());
+    Key? key,
+    Widget? child,
+    bool? lazy,
+  }) : super(
+          create: create,
+          dispose: dispose ?? (value) => value.close(),
+          key: key,
+          child: child,
+          lazy: lazy,
+        );
 
   /// [UsecaseProvider.value], which has the same usage as
   /// [RepositoryProvider.value].
-  UsecaseProvider.value({required super.value, super.key, super.child})
-    : super.value();
+  UsecaseProvider.value({
+    required T value,
+    Key? key,
+    Widget? child,
+  }) : super.value(
+          key: key,
+          value: value,
+          child: child,
+        );
 }

@@ -7,7 +7,7 @@ import '../bloc/br_local_bloc.dart';
 import '../bloc/br_main_auto_bloc.dart';
 
 class BlocResetTestApp extends StatelessWidget {
-  const BlocResetTestApp({super.key});
+  const BlocResetTestApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

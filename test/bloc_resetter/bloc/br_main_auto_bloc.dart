@@ -22,7 +22,8 @@ abstract class BRMainAutoEvent {}
 
 class BRMainAutoLoadEvent extends BRMainAutoEvent {}
 
-sealed class BRMainAutoState {}
+/// SEALED CLASS
+abstract class BRMainAutoState {}
 
 class BRMainAutoInitialState extends BRMainAutoState {
   @override
