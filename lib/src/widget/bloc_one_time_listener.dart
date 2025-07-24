@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// Signature for the [listener] function which takes the `BuildContext` along
 /// with the `value` and is responsible for executing in response to
 /// `oneTimeEmit(value)` called.
-typedef BlocOneTimeWidgetListener<T> =
-    void Function(BuildContext context, T value);
+typedef BlocOneTimeWidgetListener<T> = void Function(
+    BuildContext context, T value);
 
 /// {@template bloc_one_time_listener}
 /// A listener widget that receives one-time UI events emitted by
@@ -35,11 +35,11 @@ class BlocOneTimeListener<B extends OneTimeEmitter<T>, T>
     extends StatefulWidget {
   ///{@macro bloc_one_time_listener}
   const BlocOneTimeListener({
-    super.key,
+    Key? key,
     required this.child,
     this.bloc,
     required this.listener,
-  });
+  }) : super(key: key);
 
   /// The widget which will be rendered as a descendant of the
   /// [BlocOneTimeListener].

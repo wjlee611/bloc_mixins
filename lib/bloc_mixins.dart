@@ -1,7 +1,7 @@
 /// A collection of mixins that provide useful features for Bloc.
 ///
 /// Get started at [pub.dev documentation](https://pub.dev/documentation/bloc_mixins/latest/bloc_mixins/)
-library;
+library bloc_mixins;
 
 export 'src/core/exception.dart';
 
