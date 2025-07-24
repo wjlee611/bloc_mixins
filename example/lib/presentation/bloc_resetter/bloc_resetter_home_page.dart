@@ -13,7 +13,7 @@ class BlocResetterHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('BlocResetter Demo'),
+        title: const Text('BlocResetter Demo'),
       ),
       body: Center(
         child: Column(

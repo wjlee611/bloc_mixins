@@ -95,7 +95,7 @@ class UsecaseStreamHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('UsecaseStream Demo'),
+        title: const Text('UsecaseStream Demo'),
       ),
       body: Center(
         child: Column(
