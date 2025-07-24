@@ -1,3 +1,4 @@
+import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'bloc/ote_bloc.dart';
@@ -155,6 +156,23 @@ void main() {
       await tester.pump();
       expect(eventCount, 4);
       expect(emittedValues.last, oneTimeEmitValue);
+    });
+
+    testWidgets(
+        'throws AssertionError '
+        'when child is not specified', (tester) async {
+      const expected =
+          '''BlocOneTimeListener<OTEBloc, String> used outside of MultiBlocOneTimeListener must specify a child''';
+      await tester.pumpWidget(
+        BlocOneTimeListener<OTEBloc, String>(
+          bloc: oteBloc,
+          listener: (context, state) {},
+        ),
+      );
+      expect(
+        tester.takeException(),
+        isA<AssertionError>().having((e) => e.message, 'message', expected),
+      );
     });
   });
 }
