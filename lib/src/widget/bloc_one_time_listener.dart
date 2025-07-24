@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc_mixins/bloc_mixins.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/single_child_widget.dart';
 
 /// Signature for the [listener] function which takes the `BuildContext` along
 /// with the `value` and is responsible for executing in response to
@@ -32,18 +33,18 @@ typedef BlocOneTimeWidgetListener<T> = void Function(
 /// For more information, see [OneTimeEmitter.oneTimeEmit].
 /// {@endtemplate}
 class BlocOneTimeListener<B extends OneTimeEmitter<T>, T>
-    extends StatefulWidget {
+    extends SingleChildStatefulWidget {
   ///{@macro bloc_one_time_listener}
   const BlocOneTimeListener({
     Key? key,
-    required this.child,
+    this.child,
     this.bloc,
     required this.listener,
-  }) : super(key: key);
+  }) : super(key: key, child: child);
 
   /// The widget which will be rendered as a descendant of the
   /// [BlocOneTimeListener].
-  final Widget child;
+  final Widget? child;
 
   /// The [bloc] whose one-time UI event will be listened to.
   ///
@@ -63,7 +64,7 @@ class BlocOneTimeListener<B extends OneTimeEmitter<T>, T>
 }
 
 class _BlocOneTimeListenerState<B extends OneTimeEmitter<T>, T>
-    extends State<BlocOneTimeListener<B, T>> {
+    extends SingleChildState<BlocOneTimeListener<B, T>> {
   StreamSubscription<T>? _subscription;
   late B _bloc;
 
@@ -120,10 +121,14 @@ class _BlocOneTimeListenerState<B extends OneTimeEmitter<T>, T>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildWithChild(BuildContext context, Widget? child) {
+    assert(
+      child != null,
+      '''${widget.runtimeType} used outside of MultiBlocOneTimeListener must specify a child''',
+    );
     if (widget.bloc == null) {
       context.select<B, bool>((bloc) => identical(_bloc, bloc));
     }
-    return widget.child;
+    return child!;
   }
 }

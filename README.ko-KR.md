@@ -139,6 +139,8 @@ BlocOneTimeListener<PushedCubit, String>(
 BlocListener와 동일한 API로 one-time UI 이벤트 수신을 위한 로직을 구성할 수 있습니다.  
 Bloc 내부와 달리 contexted widget에서 제공하는 context에 접근할 수 있으므로, snackbar, dialog 띄우기에 활용할 수 있습니다.
 
+또한 위젯트리를 깔끔하게 관리하기 위해 `MultiBlocOneTimeListener` 또한 제공합니다.
+
 자세한 코드 예시는 [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/one_time_emitter/one_time_emitter_home_page.dart#L102)을 참고해주세요.
 
 ### BlocResetter

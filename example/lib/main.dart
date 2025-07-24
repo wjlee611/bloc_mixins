@@ -5,6 +5,9 @@ import 'package:example/data/counter_repository.dart';
 import 'package:example/domain/usecase/add_one_usecase.dart';
 import 'package:example/presentation/bloc_resetter/bloc/local_bloc.dart';
 import 'package:example/presentation/bloc_resetter/bloc_resetter_home_page.dart';
+import 'package:example/presentation/multi_one_time_emitter/bloc/multi_ote_home_bloc.dart';
+import 'package:example/presentation/multi_one_time_emitter/bloc/multi_ote_home_cubit.dart';
+import 'package:example/presentation/multi_one_time_emitter/multi_one_time_emitter_home_page.dart';
 import 'package:example/presentation/one_time_emitter/bloc/ote_home_bloc.dart';
 import 'package:example/presentation/one_time_emitter/one_time_emitter_home_page.dart';
 import 'package:example/presentation/usecase_stream/bloc/us_home_bloc.dart';
@@ -63,6 +66,7 @@ class ExampleRoute extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 12,
           children: [
             ElevatedButton(
               onPressed: () {
@@ -106,6 +110,23 @@ class ExampleRoute extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
+                    builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider(create: (context) => MultiOTEHomeBloc()),
+                        BlocProvider(create: (context) => MultiOTEHomeCubit()),
+                      ],
+                      child: const MultiOneTimeEmitterHomePage(),
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Multi OneTimeEmitter Example'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
                     builder: (context) => BlocProvider(
                       create: (context) => LocalCubit(),
                       child: BlocResetterHomePage(),
@@ -115,7 +136,7 @@ class ExampleRoute extends StatelessWidget {
               },
               child: const Text('InitStateResetter Example'),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 4),
             RegisteredBlocsCounter(),
           ],
         ),

@@ -10,7 +10,7 @@ class USPushedPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Pushed Page'),
+        title: const Text('Pushed Page'),
       ),
       body: Center(
         child: Column(
