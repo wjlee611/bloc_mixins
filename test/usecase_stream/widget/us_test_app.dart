@@ -8,10 +8,10 @@ class USTestApp extends StatelessWidget {
   final SyncUsecase syncUsecase;
 
   const USTestApp({
-    super.key,
+    Key? key,
     required this.syncUsecase,
     this.isProvide = false,
-  });
+  }) : super(key: key);
 
   void _pushPage(BuildContext context) {
     if (isProvide) {
@@ -58,7 +58,7 @@ class USTestApp extends StatelessWidget {
 }
 
 class PushPage extends StatelessWidget {
-  const PushPage({super.key});
+  const PushPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

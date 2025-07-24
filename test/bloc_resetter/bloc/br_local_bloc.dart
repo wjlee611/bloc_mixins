@@ -19,7 +19,8 @@ abstract class BRLocalEvent {}
 
 class BRLocalLoadEvent extends BRLocalEvent {}
 
-sealed class BRLocalState {}
+/// SEALED CLASS
+abstract class BRLocalState {}
 
 class BRLocalInitialState extends BRLocalState {
   @override

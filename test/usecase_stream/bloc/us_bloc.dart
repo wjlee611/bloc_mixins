@@ -10,7 +10,7 @@ class USBloc extends Bloc<USEvent, USState> {
       await emit.forEach(
         _syncUsecase.stream,
         onData: (syncValue) {
-          return USState(syncValue);
+          return USState(syncValue as int);
         },
       );
     });
