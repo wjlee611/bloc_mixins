@@ -1,3 +1,7 @@
+## 0.2.0
+
+- FEAT: Add `MultiUsecaseProvider` ([#12](https://github.com/wjlee611/bloc_mixins/issues/12))
+
 ## 0.1.0
 
 - STABLE RELEASE
