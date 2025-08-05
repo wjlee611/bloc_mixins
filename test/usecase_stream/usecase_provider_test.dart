@@ -42,5 +42,29 @@ void main() {
       await tester.pumpAndSettle();
       expect(syncUsecase.isClosed, false);
     });
+
+    testWidgets('ProviderNotFoundException', (tester) async {
+      final syncUsecase = SyncUsecase();
+      String thrownMessage = '';
+
+      await tester.pumpWidget(
+        USTestApp(
+            syncUsecase: syncUsecase,
+            thrownMessage: (message) {
+              thrownMessage = message;
+            }),
+      );
+
+      await tester.tap(find.text('Push Page'));
+      await tester.pumpAndSettle();
+
+      expect(thrownMessage, '''
+        UsecaseProvider.of() called with a context that does not contain a usecase of type SyncUsecase.
+        No ancestor could be found starting from the context that was passed to UsecaseProvider.of<SyncUsecase>().
+
+        This can happen if the context you used comes from a widget above the UsecaseProvider.
+
+        The context used was: Builder\n''');
+    });
   });
 }
