@@ -19,11 +19,8 @@ class UsecaseProvider<T extends UsecaseStream> extends Provider<T> {
   }) : super(
           create: create,
           dispose: (context, value) {
-            if (dispose != null) {
-              dispose(value);
-            } else {
-              value.close();
-            }
+            dispose?.call(value);
+            value.close();
           },
           key: key,
           child: child,
@@ -44,7 +41,8 @@ class UsecaseProvider<T extends UsecaseStream> extends Provider<T> {
 
   /// Method that allows widgets to access a usecase instance as long as
   /// their `BuildContext` contains a [UsecaseProvider] instance.
-  static T of<T>(BuildContext context, {bool listen = false}) {
+  static T of<T extends UsecaseStream>(BuildContext context,
+      {bool listen = false}) {
     try {
       return Provider.of<T>(context, listen: listen);
     } on ProviderNotFoundException catch (e) {
