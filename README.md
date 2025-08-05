@@ -93,6 +93,8 @@ void _pushPage(BuildContext context) {
 
 With the same API as RepositoryProvider, you can provide Usecases that inherit UsecaseStream to Blocs in the child widget tree.
 
+In addition, `MultiUsecaseProvider` is also provided to manage widget trees neatly.
+
 For detailed code examples, please refer to [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/usecase_stream/usecase_stream_home_page.dart#L20).
 
 ### OneTimeEmitter

@@ -93,6 +93,8 @@ void _pushPage(BuildContext context) {
 
 RepositoryProvider와 동일한 API로 하위 위젯트리의 Bloc에게 UsecaseStream을 상속한 Usecase를 제공할 수 있게 됩니다.
 
+또한 위젯트리를 깔끔하게 관리하기 위해 `MultiUsecaseProvider` 또한 제공합니다.
+
 자세한 코드 예시는 [example](https://github.com/wjlee611/bloc_mixins/blob/220cf9f21dc5b43e86b761632acd3704f94c377e/example/lib/presentation/usecase_stream/usecase_stream_home_page.dart#L20)을 참고해주세요.
 
 ### OneTimeEmitter
