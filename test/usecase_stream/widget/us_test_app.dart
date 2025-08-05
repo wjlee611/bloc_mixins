@@ -6,14 +6,24 @@ import '../usecase/sync_usecase.dart';
 class USTestApp extends StatelessWidget {
   final bool isProvide;
   final SyncUsecase syncUsecase;
+  final Function(String)? thrownMessage;
 
   const USTestApp({
     Key? key,
     required this.syncUsecase,
     this.isProvide = false,
+    this.thrownMessage,
   }) : super(key: key);
 
   void _pushPage(BuildContext context) {
+    if (thrownMessage != null) {
+      try {
+        UsecaseProvider.of<SyncUsecase>(context);
+      } catch (e) {
+        thrownMessage!.call(e.toString());
+      }
+      return;
+    }
     if (isProvide) {
       Navigator.push(
         context,
