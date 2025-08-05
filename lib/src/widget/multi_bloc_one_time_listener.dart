@@ -50,8 +50,8 @@ import 'package:provider/provider.dart';
 class MultiBlocOneTimeListener extends MultiProvider {
   /// {@macro multi_bloc_one_time_listener}
   MultiBlocOneTimeListener({
+    Key? key,
     required List<BlocOneTimeListener> listeners,
     required Widget child,
-    Key? key,
   }) : super(key: key, providers: listeners, child: child);
 }

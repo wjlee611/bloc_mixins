@@ -61,8 +61,8 @@ class _ChildState extends State<_Child> {
   late final StreamSubscription<int> _asyncSubscription;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     final syncUS = UsecaseProvider.of<SyncUsecase>(context);
     final asyncUS = UsecaseProvider.of<AsyncUsecase>(context);
     _syncSubscription = syncUS.stream.listen((widget.onSyncData));

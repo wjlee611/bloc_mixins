@@ -44,8 +44,8 @@ import 'package:provider/provider.dart';
 class MultiUsecaseProvider extends MultiProvider {
   /// {@macro multi_usecase_provider}
   MultiUsecaseProvider({
+    Key? key,
     required List<UsecaseProvider> providers,
     required Widget child,
-    Key? key,
   }) : super(key: key, providers: providers, child: child);
 }
