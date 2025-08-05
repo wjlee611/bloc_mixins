@@ -19,8 +19,11 @@ class UsecaseProvider<T extends UsecaseStream> extends Provider<T> {
   }) : super(
           create: create,
           dispose: (context, value) {
-            dispose?.call(value);
-            value.close();
+            try {
+              dispose?.call(value);
+            } finally {
+              value.close();
+            }
           },
           key: key,
           child: child,
